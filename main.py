@@ -155,10 +155,12 @@ def standard_print():
     print("Write the name of the file or subdirectory (without preceding /) to be opened or input X to close program.")
 
 if __name__ == '__main__':
-    with open('fat16_1sectorpercluster.img', 'rb') as f:
+    image_name = input("Insert FAT16 image name to be read\n")
+    with open(image_name, 'rb') as f:
         hexdata = f.read().hex()
         f.close()
 
+    clear()
     #FAT info
     bytes_per_sector = get_value(11, 2)
     sectors_per_cluster = get_value(13,1)
@@ -186,6 +188,7 @@ if __name__ == '__main__':
         elif open_choice[2] == '01' or open_choice[2] == '20':
             
             starting_address, final_address = cluster_address(open_choice[1])
+            print("-"*36)
             read_file(starting_address, final_address)
             standard_print()
         open_choice = input_content(open_choice)
