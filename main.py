@@ -150,7 +150,9 @@ def read_file(starting_address, final_address):
         
     print(hex_to_string(hexdata[starting_address*2:f_seek]))
 
-    pass
+def standard_print():
+    print("-"*36)
+    print("Write the name of the file or subdirectory (without preceding /) to be opened or input X to close program.")
 
 if __name__ == '__main__':
     with open('fat16_1sectorpercluster.img', 'rb') as f:
@@ -171,21 +173,20 @@ if __name__ == '__main__':
     data_start_index = root_dir_start_index + (number_of_dir_entries*32)
 
     open_choice = ["ROOT", 0, "10"]
-
     content_info = read_directory(root_dir_start_index)
-    print("-"*36)
-    print("Write the name of the file or subdirectory (without preceding /) to be opened or input X to close program.")
-
+    standard_print()
     open_choice = input_content(open_choice)
+
     while(len(open_choice)>0):
-        clear()
         if open_choice[2] == '10':
+            clear()
             starting_address, final_address = cluster_address(open_choice[1])
             content_info = read_directory(starting_address)
-            print("-"*36)
-            print("Write the name of the file or subdirectory (without preceding /) to be opened or input X to close program.")
+            standard_print()
         elif open_choice[2] == '01' or open_choice[2] == '20':
+            
             starting_address, final_address = cluster_address(open_choice[1])
             read_file(starting_address, final_address)
+            standard_print()
         open_choice = input_content(open_choice)
     
